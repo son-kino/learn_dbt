@@ -16,3 +16,9 @@ SELECT
     paidamount
 FROM 
     src_user_even
+WHERE
+    datestamp is not NULL
+    {% if is_incremental() %}
+        AND datestamp > (SELECT MAX(datestamp) from {{ this }})
+    {% endif %}
+-- 개발자가 incremental 하게 만들어줘야 한다!
